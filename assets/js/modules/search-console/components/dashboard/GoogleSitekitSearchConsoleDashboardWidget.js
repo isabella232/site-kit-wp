@@ -25,7 +25,7 @@ import classnames from 'classnames';
  * WordPress dependencies
  */
 import { Fragment, useState } from '@wordpress/element';
-import { __, _x, sprintf } from '@wordpress/i18n';
+import { __, _n, _x, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -43,7 +43,7 @@ import Alert from '../../../../components/alert';
 import ProgressBar from '../../../../components/ProgressBar';
 import getNoDataComponent from '../../../../components/notifications/nodata';
 import getDataErrorComponent from '../../../../components/notifications/data-error';
-import { getCurrentDateRange, getCurrentDateRangeDayCount } from '../../../../util/date-range';
+import { getCurrentDateRangeDayCount } from '../../../../util/date-range';
 import HelpLink from '../../../../components/help-link';
 import { STORE_NAME } from '../../datastore/constants';
 import { STORE_NAME as CORE_USER } from '../../../../googlesitekit/datastore/user/constants';
@@ -151,7 +151,7 @@ const GoogleSitekitSearchConsoleDashboardWidget = () => {
 
 	// Hide AdSense data display when we don't have data.
 	const wrapperClass = ! loading && receivingData ? '' : 'googlesitekit-nodata';
-	const currentDateRange = getCurrentDateRange( dateRange );
+	const currentDateRange = getCurrentDateRangeDayCount( dateRange );
 
 	return (
 		<Fragment>
@@ -195,8 +195,14 @@ const GoogleSitekitSearchConsoleDashboardWidget = () => {
 						) }>
 							<Layout
 								header
-								/* translators: %s: date range */
-								title={ sprintf( __( 'Overview for the last %s', 'google-site-kit' ), currentDateRange ) }
+								title={ sprintf(
+									/* translators: %s: date range */
+									_n(
+										'Overview for the last %s day',
+										'Overview for the last %s days',
+										currentDateRange, 'google-site-kit',
+									), currentDateRange,
+								) }
 								headerCTALabel={ sprintf(
 									/* translators: %s: module name. */
 									__( 'See full stats in %s', 'google-site-kit' ),
@@ -220,7 +226,14 @@ const GoogleSitekitSearchConsoleDashboardWidget = () => {
 						) }>
 							<Layout
 								/* translators: %s: date range */
-								title={ sprintf( __( 'Top search queries over the last %s', 'google-site-kit' ), currentDateRange ) }
+								title={ sprintf(
+									/* translators: %s: date range */
+									_n(
+										'Top search queries over the last %s day',
+										'Top search queries over last %s days',
+										currentDateRange, 'google-site-kit',
+									), currentDateRange,
+								) }
 								header
 								footer
 								headerCTALabel={ sprintf(
